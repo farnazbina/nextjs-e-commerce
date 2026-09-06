@@ -1,109 +1,141 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+﻿<div align="center">
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+# Lumière · Fine Jewelry
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+**A jewelry storefront built with Next.js, React, TypeScript, and Supabase.**
 
-## Features
+Responsive commerce interfaces, thoughtful product interactions, and an authentication flow in one frontend portfolio project.
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Proxy
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+[Explore the code](#engineering-highlights) · [Run locally](#run-locally) · [Developer](https://github.com/farnazbina)
 
-## Demo
+<img src="public/images/luxury-banner.png" alt="Lumière campaign image featuring gold jewelry against a warm, dark backdrop" width="100%" />
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+</div>
 
-## Deploy to Vercel
+## The project
 
-Vercel deployment will guide you through creating a Supabase account and project.
+Lumière brings a fine-jewelry brand to the web through warm neutrals, burgundy accents, editorial imagery, and spacious layouts. The experience spans collection discovery, product exploration, a cart prototype, and a three-step checkout interface.
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+Built as a frontend portfolio project, it demonstrates component composition, responsive design, typed data modeling, interactive React state, and Supabase authentication. Commerce screens currently use demo data; the repository also includes a PostgreSQL schema for future backend integration.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+## Experience at a glance
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+| Area | What's implemented |
+| --- | --- |
+| Homepage | Rotating hero carousel, category navigation, best sellers, campaign banner, and testimonials |
+| Catalog | Category and price filters, sorting, grid/list views, mobile filter panel, and empty results state |
+| Product details | Selectable image gallery, pointer-based hover zoom, quantity selector, information tabs, and related products |
+| Cart | Dedicated page with local quantity updates, item removal, calculated totals, demo coupon behavior, and an empty state; separate responsive cart drawer |
+| Checkout prototype | Address selection, payment-method selection, order review, and a confirmation dialog |
+| Authentication | Supabase sign-up, login, email confirmation, password recovery, and password update flows |
+| Database foundation | SQL tables for profiles, products, categories, carts, favorites, orders, order items, and transactions, with row-level security policies |
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+## Visual direction
 
-## Clone and run locally
+These are actual image assets used throughout the storefront.
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+<img src="public/images/hero-rings.png" alt="Homepage hero artwork showing sculptural gold rings on sunlit stone" width="100%" />
 
-2. Create a Next.js app using the Supabase Starter template npx command
+| Collection imagery | Product imagery |
+| :---: | :---: |
+| <img src="public/images/categories/necklaces.png" alt="Layered necklaces used in the collection section" width="360" /> | <img src="public/images/products/twist-ring.png" alt="Lumière Twist Ring used in the product catalog" width="360" /> |
 
-   ```bash
-   npx create-next-app --example with-supabase with-supabase-app
-   ```
+## Engineering highlights
 
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
+- **Reusable commerce components.** Shared catalog data and product types support the listing, detail, cart, and review screens. Checkout steps reuse progress and order-summary components.
+- **Responsive interaction design.** Desktop filters become a mobile panel, the cart drawer becomes a bottom sheet on smaller screens, and product layouts adapt across breakpoints.
+- **Focused React state.** Catalog filtering and sorting use derived values; the cart page calculates totals from its local items. Product galleries and checkout controls keep interaction state close to their components.
+- **Next.js application structure.** App Router routes organize the storefront and authentication pages, while `next/image` provides responsive image sizing and priority loading for featured imagery.
+- **Authentication boundaries.** Separate browser and server Supabase clients, cookie-based session handling, and an email-confirmation route support the account lifecycle.
+- **Database access rules in source control.** The SQL schema defines customer ownership and administrator policies, making the intended data-access model reviewable alongside the frontend.
 
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
-   ```
+### Start your code review here
 
-3. Use `cd` to change into the app's directory
+| Code | What to look for |
+| --- | --- |
+| [ShopCatalog.tsx](components/shop/ShopCatalog.tsx) | Filter composition, sorting, category query-parameter support, and responsive view controls |
+| [ProductDetails.tsx](components/shop/ProductDetails.tsx) | Gallery state, pointer-position zoom, and product presentation |
+| [CartPage.tsx](components/cart/CartPage.tsx) | Quantity updates, derived totals, removal, and empty-cart handling |
+| [Checkout components](components/checkout) | Composition across address, payment, and review steps |
+| [Supabase clients](lib/supabase) | Browser/server client separation and session handling |
+| [Database schema](supabase/schema.sql) | Relational modeling and row-level security policies |
 
-   ```bash
-   cd with-supabase-app
-   ```
+## Tech stack
 
-4. Rename `.env.example` to `.env.local` and update the following:
+| Purpose | Tools |
+| --- | --- |
+| Application | Next.js App Router, React 19, TypeScript |
+| Styling | Tailwind CSS, CSS variables, tailwindcss-animate |
+| UI primitives and icons | Radix UI, Lucide, React Icons |
+| Authentication and database foundation | Supabase Auth, PostgreSQL, Supabase SSR |
+| Code quality | ESLint, TypeScript |
+| Package management | pnpm with a committed lockfile |
 
-  ```env
-  NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=[INSERT SUPABASE PROJECT API PUBLISHABLE OR ANON KEY]
-  ```
-  > [!NOTE]
-  > This example uses `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, which refers to Supabase's new **publishable** key format.
-  > Both legacy **anon** keys and new **publishable** keys can be used with this variable name during the transition period. Supabase's dashboard may show `NEXT_PUBLIC_SUPABASE_ANON_KEY`; its value can be used in this example.
-  > See the [full announcement](https://github.com/orgs/supabase/discussions/29260) for more information.
+## Run locally
 
-  Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
+Use a current Node.js LTS release, pnpm, and a Supabase project for authentication.
 
-5. You can now run the Next.js local development server:
+```bash
+git clone https://github.com/farnazbina/nextjs-e-commerce.git
+cd nextjs-e-commerce
+pnpm install
+```
 
-   ```bash
-   npm run dev
-   ```
+Create `.env.local` in the project root with your Supabase project's public connection values:
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+```dotenv
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-supabase-publishable-key
+```
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+For local authentication, configure your Supabase Auth site URL as `http://localhost:3000` and allow `http://localhost:3000/auth/update-password` as a redirect URL. Email confirmation is handled by the route in [app/auth/confirm/route.ts](app/auth/confirm/route.ts); confirmation emails using this route need `token_hash` and `type` query parameters.
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+To provision the commerce database foundation, run [supabase/schema.sql](supabase/schema.sql) once in a fresh Supabase project's SQL Editor. The storefront's demo catalog does not depend on these tables yet.
 
-## Feedback and issues
+```bash
+pnpm dev
+```
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+Open [localhost:3000](http://localhost:3000). Browse `/products`, open `/products/1`, explore `/cart`, and follow `/submit-order` through the checkout prototype. Account flows begin at `/auth/login` and `/auth/sign-up`.
 
-## More Supabase examples
+| Command | Purpose |
+| --- | --- |
+| `pnpm dev` | Start the development server |
+| `pnpm lint` | Run ESLint |
+| `pnpm exec tsc --noEmit` | Check TypeScript types |
+| `pnpm build` | Create a production build |
+| `pnpm start` | Serve the production build |
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+## Project structure
+
+```text
+app/
+  (store)/          Storefront, products, cart, and checkout routes
+  auth/             Account pages and email confirmation
+  protected/        Protected starter page
+components/
+  home/             Homepage sections
+  shop/             Catalog, filters, and product details
+  cart/             Interactive cart page
+  checkout/         Address, payment, review, and shared summaries
+  auth/             Authentication components
+  layout/           Header, footer, and cart drawer
+  ui/               Shared UI primitives
+lib/
+  data/             Typed demo catalog and checkout fixtures
+  supabase/         Browser/server clients and session handling
+public/images/      Hero, category, product, and testimonial assets
+supabase/           SQL schema, migrations, and local configuration
+```
+
+## Current scope and next steps
+
+The storefront and checkout are a UI prototype with working local interactions. Product add-to-cart and favorites controls are not connected to persistence; the cart drawer, cart page, and checkout do not share synchronized state. Checkout uses sample addresses and totals, and confirmation does not create an order or process a payment.
+
+The database schema provides a foundation for commerce data, but customer order history and admin dashboards are not implemented. Next steps are to connect the catalog to Supabase, persist a shared cart, implement order creation, and add integration tests for the complete shopping flow.
+
+## Developer
+
+Built by [@farnazbina](https://github.com/farnazbina).
+
+For frontend opportunities or a discussion of the implementation, visit my [GitHub profile](https://github.com/farnazbina). This repository showcases my work with React, Next.js, TypeScript, responsive interfaces, and Supabase integration.
