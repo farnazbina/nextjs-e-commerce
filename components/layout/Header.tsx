@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { useState } from "react";
 import CartDrawer from "./CartDrawer";
+import ProductSearch from "./ProductSearch";
 import {
   FiHeart,
   FiMenu,
-  FiSearch,
   FiShoppingBag,
   FiUser,
 } from "react-icons/fi";
@@ -67,10 +67,7 @@ export default function Header() {
         </Link>
 
         <div className="flex items-center justify-self-end lg:gap-6 xl:gap-7">
-          <Link href="/products" className="group hidden items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] transition hover:text-[#9b7440] lg:flex">
-            <FiSearch className="size-5 stroke-[1.5]" aria-hidden="true" />
-            Search
-          </Link>
+          <ProductSearch />
           <Link href="/auth/login" className="group hidden items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] transition hover:text-[#9b7440] lg:flex">
             <FiUser className="size-5 stroke-[1.5]" aria-hidden="true" />
             Account
@@ -101,7 +98,6 @@ export default function Header() {
               </Link>
             ))}
             <div className="mt-3 flex gap-6">
-              <Link href="/products" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 py-3 text-xs font-semibold uppercase"><FiSearch />Search</Link>
               <Link href="/auth/login" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 py-3 text-xs font-semibold uppercase"><FiUser />Account</Link>
             </div>
           </div>

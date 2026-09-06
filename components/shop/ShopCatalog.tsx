@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PRODUCTS, PRODUCT_CATEGORIES } from "@/lib/data/catalog";
 import ShopFilters from "./ShopFilters";
+import { searchProducts } from "@/lib/data/search";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -22,6 +23,10 @@ const categories = PRODUCT_CATEGORIES;
 export default function ShopCatalog({ initialCategory }: { initialCategory?: string }) {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get("category");
+  const searchQuery = searchParams.get("q")?.trim() ?? "";
+  const clearSearchParams = new URLSearchParams(searchParams.toString());
+  clearSearchParams.delete("q");
+  const clearSearchHref = `/products${clearSearchParams.size ? `?${clearSearchParams}` : ""}`;
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     initialCategory && categories.some((category) => category === initialCategory)
       ? [initialCategory]
@@ -42,14 +47,16 @@ export default function ShopCatalog({ initialCategory }: { initialCategory?: str
 
   const toggleCategory = (category: string) => setSelectedCategories((current) => current.includes(category) ? current.filter((item) => item !== category) : [...current, category]);
   const visibleProducts = useMemo(() => {
-    const filtered = products.filter((product) => product.price <= maxPrice && (!selectedCategories.length || selectedCategories.includes(product.category)));
+    const filtered = searchProducts(searchQuery).filter((product) => product.price <= maxPrice && (!selectedCategories.length || selectedCategories.includes(product.category)));
     return [...filtered].sort((a, b) => sort === "low" ? a.price - b.price : sort === "high" ? b.price - a.price : sort === "name" ? a.name.localeCompare(b.name) : a.id - b.id);
-  }, [maxPrice, selectedCategories, sort]);
+  }, [maxPrice, selectedCategories, sort, searchQuery]);
 
   return (
     <div className="mx-auto w-full max-w-[1440px] px-4 pb-24 sm:px-6 lg:px-10">
       <nav className="py-7 text-xs uppercase tracking-[0.12em] text-stone-400" aria-label="Breadcrumb"><Link href="/" className="hover:text-stone-900">Home</Link><span className="px-2">/</span><span className="text-stone-700">Shop</span></nav>
       <header className="border-b border-stone-200 pb-10 pt-4"><p className="text-xs font-semibold uppercase tracking-[0.28em] text-stone-500">Our collection</p><h1 className="mt-3 font-serif text-4xl text-stone-900 sm:text-6xl">Shop all jewelry</h1><p className="mt-4 max-w-xl text-sm leading-6 text-stone-500 sm:text-base">Discover timeless pieces designed for every day, every occasion, and every story.</p></header>
+
+      {searchQuery && <div className="mt-6 flex flex-wrap items-center gap-3 text-sm" role="status"><p>Search results for <strong className="break-all">“{searchQuery}”</strong></p><Link href={clearSearchHref} className="text-[#7c2831] underline underline-offset-4">Clear search</Link></div>}
 
       <div className="grid gap-10 pt-9 lg:grid-cols-[220px_1fr] xl:grid-cols-[250px_1fr]">
         <aside className="hidden lg:block"><ShopFilters selected={selectedCategories} onToggle={toggleCategory} maxPrice={maxPrice} onPriceChange={setMaxPrice} /></aside>
