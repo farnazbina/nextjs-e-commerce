@@ -1,110 +1,37 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { FiX } from "react-icons/fi";
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+export function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const supabase = createClient();
-    setIsLoading(true);
-    setError(null);
-
+  const handleLogin = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setIsLoading(true); setError(null);
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const { error } = await createClient().auth.signInWithPassword({ email, password });
       if (error) throw error;
-      // Update this route to redirect to an authenticated route. The user already has an active session.
-      router.push("/protected");
+      router.push("/");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
-    } finally {
-      setIsLoading(false);
-    }
+    } finally { setIsLoading(false); }
   };
 
-  return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin}>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <Link
-                    href="/auth/forgot-password"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Logging in..." : "Login"}
-              </Button>
-            </div>
-            <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
-              <Link
-                href="/auth/sign-up"
-                className="underline underline-offset-4"
-              >
-                Sign up
-              </Link>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
-  );
+  return <><AuthHeading title="Welcome" subtitle="Please login here" /><form onSubmit={handleLogin} className="mt-7 space-y-5"><AuthInput label="Email address" id="email" type="email" value={email} onChange={setEmail} placeholder="alexa.williams@example.com" /><AuthInput label="Password" id="password" type="password" value={password} onChange={setPassword} /><div className="flex items-center justify-between gap-4"><label className="flex items-center gap-2 text-sm text-stone-600"><input type="checkbox" className="size-4 accent-[#c9747e]" />Remember me</label><Link href="/auth/forgot-password" className="text-sm text-[#c05f6b] hover:underline">Forgot password?</Link></div>{error && <p className="text-sm text-red-600">{error}</p>}<button disabled={isLoading} className="min-h-12 w-full bg-[#c9747e] text-xs font-semibold uppercase tracking-[0.12em] text-white hover:bg-[#a9535e] disabled:opacity-60">{isLoading ? "Logging in…" : "Login"}</button><Link href="/auth/sign-up" className="flex min-h-12 items-center justify-center border border-[#c9747e] text-xs font-semibold uppercase tracking-[0.12em] text-[#b85d68] hover:bg-[#fff6f7]">Register</Link></form></>;
+}
+
+export function AuthHeading({ title, subtitle }: { title: string; subtitle: string }) {
+  return <div className="relative pr-10"><h1 className="font-serif text-3xl tracking-[-0.03em] text-stone-900">{title}</h1><p className="mt-1.5 text-xs text-stone-500">{subtitle}</p><Link href="/" aria-label="Close" className="absolute -right-1 -top-1 grid size-9 place-items-center text-stone-500 hover:text-stone-900"><FiX /></Link></div>;
+}
+
+export function AuthInput({ label, id, type = "text", value, onChange, placeholder }: { label: string; id: string; type?: string; value: string; onChange: (value: string) => void; placeholder?: string }) {
+  return <label className="block" htmlFor={id}><span className="mb-2 block text-xs text-stone-500">{label}</span><input id={id} type={type} required value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} className="min-h-11 w-full border border-stone-200 px-4 text-sm text-stone-900 outline-none transition focus:border-[#c9747e]" /></label>;
 }
